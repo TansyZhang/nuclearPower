@@ -1,0 +1,1784 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+
+    <script language="javascript" src="jquery-1.12.2.min.js"></script>
+    <script type="text/javascript" src="Chart.js"></script>
+    <style type="text/css">
+      html, body {
+        margin: 0;
+        padding: 0;
+        width:100%;
+        height: 100%
+      }
+
+      .header{
+        background-color: #fff;
+        text-align: center;
+        height: 140px;
+        font-family: 'Microsoft Yahei', Georgia, sans-serif;
+      }
+      .header h1{
+        color: #fff;
+        font-size: 42px;
+        margin:0 auto;
+        margin-top: 0px;
+        margin-right: auto;
+        margin-bottom: 0px;
+        margin-left: auto;
+        position:relative;
+        padding-bottom: 10px;
+        top:44px; 
+      }
+
+       
+      #mainCanvas{
+        margin-left: auto;
+        margin-right: auto;
+        background-color: #3b5998;
+        display: block;
+      }
+      
+      #infoCanvas{
+       
+        background-color: #3b5998;
+        display: inline-block;
+      }
+      #timeCanvas{
+        background-color: #3b5998;
+        display: inline-block;
+      }
+
+      #chartCanvas{
+        
+        display: inline-block;
+      }
+
+      #totalTimeCanvas{
+        margin-left: auto;
+        margin-right: auto;
+        background-color: #3b5998;
+        display: block;
+      }
+      #infoDiv{
+        margin-left: auto;
+        margin-right: auto;
+        padding-top: 1%;
+        padding-bottom: 1%;
+      }
+
+      #totalTimeCanvas{
+        margin-left: auto;
+        margin-right: auto;
+        background-color: #3b5998;
+        display: block;
+      }
+      
+      #visualisation{
+        margin-left: 3%;
+        margin-right: auto;
+        display: block;
+      }
+
+      #googft-mapCanvas {
+          height: 400px;
+          margin-right: auto;
+          margin-left: 2%;
+          padding: 0;
+          float: left;
+          width: 50%;
+          
+        }
+
+      .footer {
+        background-color: #8b9dc3;
+        text-align: center;
+        height:25em;
+        text-color:#3b5998;
+        font-family: 'Microsoft Yahei', Georgia, sans-serif;
+        font-size: 0.7em;
+        margin-top: -3em;
+        text-decoration: bold;
+      }
+      .footer p{
+        color: #f7f7f7;
+        text-align: left;
+      }
+      .footer a{
+        color: #f7f7f7;
+      }
+      .footer #link{
+        border-top: 500px;
+      }
+      #text p{
+        color:#3b5998;
+        font-family: 'Microsoft Yahei', Georgia, sans-serif;
+        text-decoration: bold;
+        text-indent: 2em;
+        text-align: justify;
+        font-size: 0.9em;
+      }
+      li{
+        color:#3b5998;
+        font-family: 'Microsoft Yahei', Georgia, sans-serif;
+        text-decoration: bold;
+        text-align: justify;
+        font-size: 0.9em;
+
+      }
+      #author p{
+        text-align: center;
+      }
+    </style>
+    <meta name="viewport"></meta>
+
+<script type="text/javascript" src="https://maps.google.com/maps/api/js?v=3"></script>
+
+<script type="text/javascript">
+  function initialize() {
+    google.maps.visualRefresh = true;
+    var mapDiv = document.getElementById('googft-mapCanvas');
+    //mapDiv.style.width = '900px';
+    //mapDiv.style.height = '400px';
+    var acMap = new google.maps.Map(mapDiv, {
+      center: new google.maps.LatLng(47.67467522235851, 131.17283465000014),
+      zoom: 2,
+      mapTypeId: google.maps.MapTypeId.ROADMAP
+    });
+
+    layer = new google.maps.FusionTablesLayer({
+      map: acMap,
+      heatmap: { enabled: false },
+      query: {
+        select: "col4",
+        from: "1Hh2B1h-pRiDmDYA-nNwGNQTLcjfTW41mSVFx5BNF",
+        where: ""
+      },
+      options: {
+        styleId: 2,
+        templateId: 2
+      }
+    });
+
+  }
+
+  google.maps.event.addDomListener(window, 'load', initialize);
+</script>
+  <title>Nuclear Power in China</title>
+</head>
+<body>
+  <!---head: Title, with annotation -->
+  <div class = "header" style="background-color:#8b9dc3;width:100%;height:8em;">
+    <h1 >新能源：核电知识知多少?</h1>
+  </div>
+  <!---Intro Start: D3 Line Chart, Text  -->
+  <div id="intro" style="background-color:#dfe3ee; width:100%;height:30em;">
+    <!--- Chart Start-->
+    <div id="svgDiv" style="width:40%;padding-left:2em;padding-top:4em;float: left;"> 
+        <svg id="visualisation" style="width:100%;height:300px;"></svg>
+    </div>
+    <!--- Chart End-->
+    <!--- Text Start-->
+    <div id="text" style="width:50%; height:13em; display:inline-block; float:right; padding-right:3em;">
+        <p>环境污染，尤其是大气污染，无疑是近几年来最受关注的社会话题之一。一边是“常态灰”秒变“阅兵蓝”，一边是23个城市同时出现重度空气污染。中国的空气质量，仿佛坐上了过山车－不过是大部分时间让人失望，偶尔才有超常发挥，蓝天白云、清新空气已跻身奢侈品之列。柴静在纪录片《穹顶之下》中提到，能源、冶金、机动车尾气排放，是形成雾霾的主要原因；也有报告指出，煤烟型污染是产生二氧化硫、氧氮化物和粉尘的第一大污染源。而传统的火力发电行业，正是燃煤的主体。</p>
+
+        <p>目前，我国主流的发电方式除了火力发电外，还包括水力发电、风力发电和核电。如左图所示，1995年至2013年间，火力发电量激增，而核电缺增长缓慢，是什么阻碍了我国核电的发展？</p>
+
+        <p>今年的政府工作报告提出，“十三五期间要在‘一带一路’建设上取得重大进展，国际产能合作实现新的突破”，外界普遍认为这是中国核电走向世界的序幕。两会期间，核电作为潜力巨大又饱受争议的清洁能源，屡次被提上议事堂。它具有发电效率高和环境影响小的优势，不过安全性和废料处理问题，也一直是争论的焦点。尤其是2011年福岛核电站泄漏事故之后，我国核电发展一度陷入低潮，反对核电的声音也越来越多。</p>
+       
+        <p>  然而，我们停止发展核电的脚步了吗？核电站发电量虽然远远低于火电，但是我国核电站数量却越来越多？那么，我国核电的现状是？</p>
+    </div>
+    <!--- Text End-->         
+            <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+            <script>
+       
+              function InitChart() {
+              var waterData = [{"year":1995,"capacity":1905.8},
+                            {"year":1996,"capacity":1879.7},
+                            {"year":1997,"capacity":1959.8},
+                            {"year":1998,"capacity":2080.0},
+                            {"year":1999,"capacity":2038.1},
+                            {"year":2000,"capacity":2224.1},
+                            {"year":2001,"capacity":2774.3},
+                            {"year":2002,"capacity":2879.7},
+                            {"year":2003,"capacity":2836.8},
+                            {"year":2004,"capacity":3535.4},
+                            {"year":2005,"capacity":3970.2},
+                            {"year":2006,"capacity":4357.9},
+                            {"year":2007,"capacity":4852.6},
+                            {"year":2008,"capacity":5851.9},
+                            {"year":2009,"capacity":6156.4},
+                            {"year":2010,"capacity":7221.7},
+                            {"year":2011,"capacity":6989.5},
+                            {"year":2012,"capacity":8721.1},
+                            {"year":2013,"capacity":9202.9}]
+              var fireData = [{"year":1995,"capacity":8043.2},
+                            {"year":1996,"capacity":8777.1},
+                            {"year":1997,"capacity":9240.7},
+                            {"year":1998,"capacity":9441.0},
+                            {"year":1999,"capacity":10205.4},
+                            {"year":2000,"capacity":11164.5},
+                            {"year":2001,"capacity":11767.5},
+                            {"year":2002,"capacity":13273.8},
+                            {"year":2003,"capacity":15803.6},
+                            {"year":2004,"capacity":17933.9},
+                            {"year":2005,"capacity":20473.4},
+                            {"year":2006,"capacity":23696.0},
+                            {"year":2007,"capacity":27229.3},
+                            {"year":2008,"capacity":27900.8},
+                            {"year":2009,"capacity":29827.8},
+                            {"year":2010,"capacity":33319.3},
+                            {"year":2011,"capacity":38337.0},
+                            {"year":2012,"capacity":38928.1},
+                            {"year":2013,"capacity":42470.1}]
+            var nuclearData = [{"year":1995,"capacity":128.3},
+                              {"year":1996,"capacity":143.4},
+                              {"year":1997,"capacity":144.2},
+                              {"year":1998,"capacity":141.0},
+                              {"year":1999,"capacity":149.5},
+                              {"year":2000,"capacity":167.4},
+                              {"year":2001,"capacity":174.72},
+                              {"year":2002,"capacity":251.2},
+                              {"year":2003,"capacity":433.4},
+                              {"year":2004,"capacity":504.7},
+                              {"year":2005,"capacity":530.9},
+                              {"year":2006,"capacity":548.4},
+                              {"year":2007,"capacity":621.3},
+                              {"year":2008,"capacity":683.9},
+                              {"year":2009,"capacity":701.3},
+                              {"year":2010,"capacity":738.8},
+                              {"year":2011,"capacity":863.5},
+                              {"year":2012,"capacity":973.9},
+                              {"year":2013,"capacity":1116.1}];
+          var windData =[{"year":1995,"capacity":0.0},
+                              {"year":1996,"capacity":0.0},
+                              {"year":1997,"capacity":0.0},
+                              {"year":1998,"capacity":0.0},
+                              {"year":1999,"capacity":0.0},
+                              {"year":2000,"capacity":0.0},
+                              {"year":2001,"capacity":0.0},
+                              {"year":2002,"capacity":0.0},
+                              {"year":2003,"capacity":0.0},
+                              {"year":2004,"capacity":0.0},
+                              {"year":2005,"capacity":0.0},
+                              {"year":2006,"capacity":0.0},
+                              {"year":2007,"capacity":0.0},
+                              {"year":2008,"capacity":0.0},
+                              {"year":2009,"capacity":0.0},
+                              {"year":2010,"capacity":446.2},
+                              {"year":2011,"capacity":703.3},
+                              {"year":2012,"capacity":959.8},
+                              {"year":2013,"capacity":1412.0}]
+
+
+
+                    var vis = d3.select("#visualisation"),
+                        WIDTH = 500,
+                        HEIGHT = 250,
+                        MARGINS = {
+                            top: 20,
+                            right: 60,
+                            bottom: 20,
+                            left: 50
+                        },
+                        xScale = d3.scale.linear().range([MARGINS.left, WIDTH - MARGINS.right]).domain([1995, 2013]),
+
+                        yScale = d3.scale.linear().range([HEIGHT - MARGINS.top, MARGINS.bottom]).domain([0, 43000]),
+
+                        xAxis = d3.svg.axis()
+                        .tickFormat(d3.format("d"))
+                        .tickSize(2)
+                        .ticks(10)
+                        .scale(xScale);
+
+
+                        yAxis = d3.svg.axis()
+                        .tickSize(2)
+                        .scale(yScale)
+                        .orient("left")
+                        .ticks(11);
+
+         
+                    vis.append("svg:g")
+                        .attr("class", "x axis")
+                        .attr("transform", "translate(0," + (HEIGHT - MARGINS.bottom) + ")")
+                        .call(xAxis);
+                        
+
+                    vis.append("svg:g")
+                        .attr("class", "y axis")
+                        .attr("transform", "translate(" + (MARGINS.left) + ",0)")
+                        .call(yAxis);
+
+                    var lineGen = d3.svg.line()
+                        .x(function(d) {
+                            return xScale(d.year);
+                        })
+                        .y(function(d) {
+                            return yScale(d.capacity);
+                        })
+                        .interpolate("basis");
+
+                    var addSvgData = function(data,color){
+                        vis.append('svg:path')
+                            .attr('d', lineGen(data))
+                            .attr('stroke', color)
+                            .attr('stroke-width', 2)
+                            .attr('fill', 'none');
+                    }
+
+                    var addSvgText = function(text,color,x,y){
+                        vis.append("text")   
+                            .attr("fill", color )
+                            .attr("font-size","18px" )
+                            .attr("x", x)
+                            .attr("y", y)
+                            .text(text);
+                    }
+                    var dataLink = "http://www.stats.gov.cn/tjsj/ndsj"
+                    var addSvgLink = function(word,link,color,x,y){
+                        vis.append('a')
+                           .attr('xlink:href',link)
+                           .attr('target',"_blank")
+                           .append("text")
+                           .attr('font-size',"12px")
+                           .attr('text-decoration','underline')
+                           .attr('fill',color)
+                           .attr("x", x)
+                           .attr("y", y)
+                           .text(word)
+                    }
+
+                    addSvgData(fireData,"red");
+                    addSvgData(waterData,"blue");
+                    addSvgData(nuclearData,"orange");
+                    addSvgData(windData,"green");
+                    addSvgText("年份","black",222,270);
+                    addSvgText("发电量/亿千瓦时","black",70,40);
+                    addSvgText("火电","red",452,18);
+                    addSvgText("水电","blue",452,188);
+                    addSvgText("核电","orange",452,225);
+                    addSvgText("风电","green",452,243);
+                    addSvgLink("数据来源：中华人民共和国国家统计局 - 中国统计年鉴",dataLink,"#8b9dc3",100,295);
+
+                }
+
+
+
+
+                InitChart();
+            </script>
+  </div>
+   <!---Intro End: D3 Line Chart, Text  -->
+  <div class = "container" width = "100%">
+    <div id="infoDiv" style="background-color:#3b5998; width:100%;">
+        <canvas id="infoCanvas"  width="800" height="500" style="width:400px;height:200px;"></canvas>
+        <canvas id="timeCanvas"  width="800" height="500" style="width:400px;height:200px;"></canvas>
+        <canvas id="chartCanvas" width="300" height="150"></canvas>
+    </div>
+    <div class = "core" style="background-color:#3b5998; width:100%;">
+        <canvas id="mainCanvas" width="2600" height="2100" style="width:1300px;height:1050px;"></canvas>
+    </div>
+    <div class ="dataSource"  style = "background-color:#3b5998; width:100%; height:3em;text-align:center;">
+      <p style ="color:#dfe3ee;font-size:12px;margin-top:-0.2em;">此区域图表数据来源：</p>
+      <a href ="http://goo.gl/YUnPQg" target = "_blank" style ="color:#dfe3ee;font-size:12px;">世界核协会</a>
+      <a href ="http://nnsa.mep.gov.cn/hdcfbt/" target = "_blank" style ="color:#dfe3ee;font-size:12px;">国家核安全局</a>
+      <a href ="https://data.oecd.org/" target = "_blank" style ="color:#dfe3ee;font-size:12px;">OECD Data</a>
+    </div>
+    <div class = "timeLine" style="background-color:#3b5998;width:100%;padding-top:1em;">
+        <canvas id="totalTimeCanvas" width="2600" height="400" style="width:1300;height:200px;"></canvas>
+    </div>
+    <script type="text/javascript">
+
+      var stationList=[
+        {id:"s0",name:"中国原子能科学研究院",state:"运营",type:"快堆",explan:"快堆，是“快中子反应堆”的简称，是世界上第四代先进核能系统的首选堆型。可使铀资源利用率提高至60%以上，也可使核废料产生量得到最大程度的降低，实现放射性废物最小化。国际社会普遍认为，发展和推广快堆，可以从根本上解决世界能源的可持续发展和绿色发展问题。"},
+        {id:"s1",name:"石岛湾核电站1期",state:"修建",type:"高温气冷堆",explan:"用作，出口温度高的核反应堆。高温气冷堆采用涂敷颗粒燃料，以石墨作慢化剂。为，甚至更高。核燃料一般采用高浓二氧化铀，亦有采用低浓二氧化铀的。根据堆芯形状，高温气冷堆分球床高温气冷堆和棱柱状高温气冷堆。"},
+        {id:"s2",name:"海阳核电站1期",state:"修建",type:"压力水冷反应堆",explan:"压水堆使用加压轻水（即普通水）作冷却剂和慢化剂，且水在堆内不沸腾的核反应堆。燃料为低浓铀。20世纪80年代，被公认为是技术最成熟，运行安全、经济实用的堆型。"},
+        {id:"s3",name:"海阳核电站2期",state:"修建",type:"压力水冷反应堆",explan:"压水堆使用加压轻水（即普通水）作冷却剂和慢化剂，且水在堆内不沸腾的核反应堆。燃料为低浓铀。20世纪80年代，被公认为是技术最成熟，运行安全、经济实用的堆型。"},
+        {id:"s4",name:"红沿河核电站1期",state:"运营",type:"压力水冷反应堆",explan:"压水堆使用加压轻水（即普通水）作冷却剂和慢化剂，且水在堆内不沸腾的核反应堆。燃料为低浓铀。20世纪80年代，被公认为是技术最成熟，运行安全、经济实用的堆型。"},
+        {id:"s5",name:"红沿河核电站2期",state:"运营",type:"压力水冷反应堆",explan:"压水堆使用加压轻水（即普通水）作冷却剂和慢化剂，且水在堆内不沸腾的核反应堆。燃料为低浓铀。20世纪80年代，被公认为是技术最成熟，运行安全、经济实用的堆型。"},
+        {id:"s6",name:"红沿河核电站3期",state:"运营",type:"压力水冷反应堆",explan:"压水堆使用加压轻水（即普通水）作冷却剂和慢化剂，且水在堆内不沸腾的核反应堆。燃料为低浓铀。20世纪80年代，被公认为是技术最成熟，运行安全、经济实用的堆型。"},
+        {id:"s7",name:"红沿河核电站4期",state:"修建",type:"压力水冷反应堆",explan:"压水堆使用加压轻水（即普通水）作冷却剂和慢化剂，且水在堆内不沸腾的核反应堆。燃料为低浓铀。20世纪80年代，被公认为是技术最成熟，运行安全、经济实用的堆型。"},
+        {id:"s8",name:"红沿河核电站5期",state:"修建",type:"压力水冷反应堆",explan:"压水堆使用加压轻水（即普通水）作冷却剂和慢化剂，且水在堆内不沸腾的核反应堆。燃料为低浓铀。20世纪80年代，被公认为是技术最成熟，运行安全、经济实用的堆型。"},
+        {id:"s9",name:"红沿河核电站6期",state:"修建",type:"压力水冷反应堆",explan:"压水堆使用加压轻水（即普通水）作冷却剂和慢化剂，且水在堆内不沸腾的核反应堆。燃料为低浓铀。20世纪80年代，被公认为是技术最成熟，运行安全、经济实用的堆型。"},
+        {id:"s10",name:"田湾核电站1期",state:"运营",type:"压力水冷反应堆",explan:"压水堆使用加压轻水（即普通水）作冷却剂和慢化剂，且水在堆内不沸腾的核反应堆。燃料为低浓铀。20世纪80年代，被公认为是技术最成熟，运行安全、经济实用的堆型。"},
+        {id:"s11",name:"田湾核电站2期",state:"运营",type:"压力水冷反应堆",explan:"压水堆使用加压轻水（即普通水）作冷却剂和慢化剂，且水在堆内不沸腾的核反应堆。燃料为低浓铀。20世纪80年代，被公认为是技术最成熟，运行安全、经济实用的堆型。"},
+        {id:"s12",name:"田湾核电站3期",state:"修建",type:"压力水冷反应堆",explan:"压水堆使用加压轻水（即普通水）作冷却剂和慢化剂，且水在堆内不沸腾的核反应堆。燃料为低浓铀。20世纪80年代，被公认为是技术最成熟，运行安全、经济实用的堆型。"},
+        {id:"s13",name:"田湾核电站4期",state:"修建",type:"压力水冷反应堆",explan:"压水堆使用加压轻水（即普通水）作冷却剂和慢化剂，且水在堆内不沸腾的核反应堆。燃料为低浓铀。20世纪80年代，被公认为是技术最成熟，运行安全、经济实用的堆型。"},
+        {id:"s14",name:"秦山核电站1期",state:"运营",type:"压力水冷反应堆",explan:"压水堆使用加压轻水（即普通水）作冷却剂和慢化剂，且水在堆内不沸腾的核反应堆。燃料为低浓铀。20世纪80年代，被公认为是技术最成熟，运行安全、经济实用的堆型。"},
+        {id:"s15",name:"秦山核电站2.1期",state:"运营",type:"压力水冷反应堆",explan:"压水堆使用加压轻水（即普通水）作冷却剂和慢化剂，且水在堆内不沸腾的核反应堆。燃料为低浓铀。20世纪80年代，被公认为是技术最成熟，运行安全、经济实用的堆型。"},
+        {id:"s16",name:"秦山核电站2.2期",state:"运营",type:"压力水冷反应堆",explan:"压水堆使用加压轻水（即普通水）作冷却剂和慢化剂，且水在堆内不沸腾的核反应堆。燃料为低浓铀。20世纪80年代，被公认为是技术最成熟，运行安全、经济实用的堆型。"},
+        {id:"s17",name:"秦山核电站2.3期",state:"运营",type:"压力水冷反应堆",explan:"压水堆使用加压轻水（即普通水）作冷却剂和慢化剂，且水在堆内不沸腾的核反应堆。燃料为低浓铀。20世纪80年代，被公认为是技术最成熟，运行安全、经济实用的堆型。"},
+        {id:"s18",name:"秦山核电站2.4期",state:"运营",type:"压力水冷反应堆",explan:"压水堆使用加压轻水（即普通水）作冷却剂和慢化剂，且水在堆内不沸腾的核反应堆。燃料为低浓铀。20世纪80年代，被公认为是技术最成熟，运行安全、经济实用的堆型。"},
+        {id:"s19",name:"秦山核电站3.1期",state:"运营",type:"加压重水反应堆",explan:"重水即氧化氘作为慢化剂的核反应堆被称为重水反应堆，或简称为重水堆现在的反应堆几乎都利用热中子，因此慢化剂是反应堆不可缺少的组成部分慢化剂与中子碰撞使中子亦即减少中子的数量的话，便失去了意义。所以，重水是非常优异的慢化剂，它与石墨并列是最常用的慢化剂。"},
+        {id:"s20",name:"秦山核电站3.2期",state:"运营",type:"加压重水反应堆",explan:"重水即氧化氘作为慢化剂的核反应堆被称为重水反应堆，或简称为重水堆现在的反应堆几乎都利用热中子，因此慢化剂是反应堆不可缺少的组成部分慢化剂与中子碰撞使中子亦即减少中子的数量的话，便失去了意义。所以，重水是非常优异的慢化剂，它与石墨并列是最常用的慢化剂。"},
+        {id:"s21",name:"三门核电站1期",state:"修建",type:"压力水冷反应堆",explan:"压水堆使用加压轻水（即普通水）作冷却剂和慢化剂，且水在堆内不沸腾的核反应堆。燃料为低浓铀。20世纪80年代，被公认为是技术最成熟，运行安全、经济实用的堆型。"},
+        {id:"s22",name:"三门核电站2期",state:"修建",type:"压力水冷反应堆",explan:"压水堆使用加压轻水（即普通水）作冷却剂和慢化剂，且水在堆内不沸腾的核反应堆。燃料为低浓铀。20世纪80年代，被公认为是技术最成熟，运行安全、经济实用的堆型。"},
+        {id:"s23",name:"方家山核电站1期",state:"运营",type:"压力水冷反应堆",explan:"压水堆使用加压轻水（即普通水）作冷却剂和慢化剂，且水在堆内不沸腾的核反应堆。燃料为低浓铀。20世纪80年代，被公认为是技术最成熟，运行安全、经济实用的堆型。"},
+        {id:"s24",name:"方家山核电站2期",state:"运营",type:"压力水冷反应堆",explan:"压水堆使用加压轻水（即普通水）作冷却剂和慢化剂，且水在堆内不沸腾的核反应堆。燃料为低浓铀。20世纪80年代，被公认为是技术最成熟，运行安全、经济实用的堆型。"},
+        {id:"s25",name:"福清核电站1期",state:"运营",type:"压力水冷反应堆",explan:"压水堆使用加压轻水（即普通水）作冷却剂和慢化剂，且水在堆内不沸腾的核反应堆。燃料为低浓铀。20世纪80年代，被公认为是技术最成熟，运行安全、经济实用的堆型。"},
+        {id:"s26",name:"福清核电站2期",state:"运营",type:"压力水冷反应堆",explan:"压水堆使用加压轻水（即普通水）作冷却剂和慢化剂，且水在堆内不沸腾的核反应堆。燃料为低浓铀。20世纪80年代，被公认为是技术最成熟，运行安全、经济实用的堆型。"},
+        {id:"s27",name:"福清核电站3期",state:"修建",type:"压力水冷反应堆",explan:"压水堆使用加压轻水（即普通水）作冷却剂和慢化剂，且水在堆内不沸腾的核反应堆。燃料为低浓铀。20世纪80年代，被公认为是技术最成熟，运行安全、经济实用的堆型。"},
+        {id:"s28",name:"福清核电站4期",state:"修建",type:"压力水冷反应堆",explan:"压水堆使用加压轻水（即普通水）作冷却剂和慢化剂，且水在堆内不沸腾的核反应堆。燃料为低浓铀。20世纪80年代，被公认为是技术最成熟，运行安全、经济实用的堆型。"},
+        {id:"s29",name:"福清核电站5期",state:"修建",type:"压力水冷反应堆",explan:"压水堆使用加压轻水（即普通水）作冷却剂和慢化剂，且水在堆内不沸腾的核反应堆。燃料为低浓铀。20世纪80年代，被公认为是技术最成熟，运行安全、经济实用的堆型。"},
+        {id:"s30",name:"宁德核电站1期",state:"运营",type:"压力水冷反应堆",explan:"压水堆使用加压轻水（即普通水）作冷却剂和慢化剂，且水在堆内不沸腾的核反应堆。燃料为低浓铀。20世纪80年代，被公认为是技术最成熟，运行安全、经济实用的堆型。"},
+        {id:"s31",name:"宁德核电站2期",state:"运营",type:"压力水冷反应堆",explan:"压水堆使用加压轻水（即普通水）作冷却剂和慢化剂，且水在堆内不沸腾的核反应堆。燃料为低浓铀。20世纪80年代，被公认为是技术最成熟，运行安全、经济实用的堆型。"},
+        {id:"s32",name:"宁德核电站3期",state:"运营",type:"压力水冷反应堆",explan:"压水堆使用加压轻水（即普通水）作冷却剂和慢化剂，且水在堆内不沸腾的核反应堆。燃料为低浓铀。20世纪80年代，被公认为是技术最成熟，运行安全、经济实用的堆型。"},
+        {id:"s33",name:"宁德核电站4期",state:"修建",type:"压力水冷反应堆",explan:"压水堆使用加压轻水（即普通水）作冷却剂和慢化剂，且水在堆内不沸腾的核反应堆。燃料为低浓铀。20世纪80年代，被公认为是技术最成熟，运行安全、经济实用的堆型。"},
+        {id:"s34",name:"岭澳核电站1期",state:"运营",type:"压力水冷反应堆",explan:"压水堆使用加压轻水（即普通水）作冷却剂和慢化剂，且水在堆内不沸腾的核反应堆。燃料为低浓铀。20世纪80年代，被公认为是技术最成熟，运行安全、经济实用的堆型。"},
+        {id:"s35",name:"岭澳核电站2期",state:"运营",type:"压力水冷反应堆",explan:"压水堆使用加压轻水（即普通水）作冷却剂和慢化剂，且水在堆内不沸腾的核反应堆。燃料为低浓铀。20世纪80年代，被公认为是技术最成熟，运行安全、经济实用的堆型。"},
+        {id:"s36",name:"岭澳核电站3期",state:"运营",type:"压力水冷反应堆",explan:"压水堆使用加压轻水（即普通水）作冷却剂和慢化剂，且水在堆内不沸腾的核反应堆。燃料为低浓铀。20世纪80年代，被公认为是技术最成熟，运行安全、经济实用的堆型。"},
+        {id:"s37",name:"岭澳核电站4期",state:"运营",type:"压力水冷反应堆",explan:"压水堆使用加压轻水（即普通水）作冷却剂和慢化剂，且水在堆内不沸腾的核反应堆。燃料为低浓铀。20世纪80年代，被公认为是技术最成熟，运行安全、经济实用的堆型。"},
+        {id:"s38",name:"台山核电站1期",state:"修建",type:"压力水冷反应堆",explan:"压水堆使用加压轻水（即普通水）作冷却剂和慢化剂，且水在堆内不沸腾的核反应堆。燃料为低浓铀。20世纪80年代，被公认为是技术最成熟，运行安全、经济实用的堆型。"},
+        {id:"s39",name:"台山核电站2期",state:"修建",type:"压力水冷反应堆",explan:"压水堆使用加压轻水（即普通水）作冷却剂和慢化剂，且水在堆内不沸腾的核反应堆。燃料为低浓铀。20世纪80年代，被公认为是技术最成熟，运行安全、经济实用的堆型。"},
+        {id:"s40",name:"阳江核电站1期",state:"运营",type:"压力水冷反应堆",explan:"压水堆使用加压轻水（即普通水）作冷却剂和慢化剂，且水在堆内不沸腾的核反应堆。燃料为低浓铀。20世纪80年代，被公认为是技术最成熟，运行安全、经济实用的堆型。"},
+        {id:"s41",name:"阳江核电站2期",state:"运营",type:"压力水冷反应堆",explan:"压水堆使用加压轻水（即普通水）作冷却剂和慢化剂，且水在堆内不沸腾的核反应堆。燃料为低浓铀。20世纪80年代，被公认为是技术最成熟，运行安全、经济实用的堆型。"},
+        {id:"s42",name:"阳江核电站3期",state:"运营",type:"压力水冷反应堆",explan:"压水堆使用加压轻水（即普通水）作冷却剂和慢化剂，且水在堆内不沸腾的核反应堆。燃料为低浓铀。20世纪80年代，被公认为是技术最成熟，运行安全、经济实用的堆型。"},
+        {id:"s43",name:"阳江核电站4期",state:"运营",type:"压力水冷反应堆",explan:"压水堆使用加压轻水（即普通水）作冷却剂和慢化剂，且水在堆内不沸腾的核反应堆。燃料为低浓铀。20世纪80年代，被公认为是技术最成熟，运行安全、经济实用的堆型。"},
+        {id:"s44",name:"阳江核电站5期",state:"修建",type:"压力水冷反应堆",explan:"压水堆使用加压轻水（即普通水）作冷却剂和慢化剂，且水在堆内不沸腾的核反应堆。燃料为低浓铀。20世纪80年代，被公认为是技术最成熟，运行安全、经济实用的堆型。"},
+        {id:"s45",name:"阳江核电站6期",state:"修建",type:"压力水冷反应堆",explan:"压水堆使用加压轻水（即普通水）作冷却剂和慢化剂，且水在堆内不沸腾的核反应堆。燃料为低浓铀。20世纪80年代，被公认为是技术最成熟，运行安全、经济实用的堆型。"},
+        {id:"s46",name:"大亚湾核电站1期",state:"运营",type:"压力水冷反应堆",explan:"压水堆使用加压轻水（即普通水）作冷却剂和慢化剂，且水在堆内不沸腾的核反应堆。燃料为低浓铀。20世纪80年代，被公认为是技术最成熟，运行安全、经济实用的堆型。"},
+        {id:"s47",name:"大亚湾核电站2期",state:"运营",type:"压力水冷反应堆",explan:"压水堆使用加压轻水（即普通水）作冷却剂和慢化剂，且水在堆内不沸腾的核反应堆。燃料为低浓铀。20世纪80年代，被公认为是技术最成熟，运行安全、经济实用的堆型。"},
+        {id:"s48",name:"防城港核电站1期",state:"运营",type:"压力水冷反应堆",explan:"压水堆使用加压轻水（即普通水）作冷却剂和慢化剂，且水在堆内不沸腾的核反应堆。燃料为低浓铀。20世纪80年代，被公认为是技术最成熟，运行安全、经济实用的堆型。"},
+        {id:"s49",name:"防城港核电站2期",state:"修建",type:"压力水冷反应堆",explan:"压水堆使用加压轻水（即普通水）作冷却剂和慢化剂，且水在堆内不沸腾的核反应堆。燃料为低浓铀。20世纪80年代，被公认为是技术最成熟，运行安全、经济实用的堆型。"},
+        {id:"s50",name:"昌江核电站1期",state:"运营",type:"压力水冷反应堆",explan:"压水堆使用加压轻水（即普通水）作冷却剂和慢化剂，且水在堆内不沸腾的核反应堆。燃料为低浓铀。20世纪80年代，被公认为是技术最成熟，运行安全、经济实用的堆型。"},
+        {id:"s51",name:"昌江核电站2期",state:"修建",type:"压力水冷反应堆",explan:"压水堆使用加压轻水（即普通水）作冷却剂和慢化剂，且水在堆内不沸腾的核反应堆。燃料为低浓铀。20世纪80年代，被公认为是技术最成熟，运行安全、经济实用的堆型。"}
+      ];
+
+      var ownerList=[
+        {id:"ow0",name:"中国核工业集团公司"},
+        {id:"ow1",name:"中国华能集团公司"},
+        {id:"ow2",name:"国家电力投资集团"},
+        {id:"ow3",name:"辽宁红沿河核电有限公司"},
+        {id:"ow4",name:"江苏核电有限公司"},
+        {id:"ow5",name:"秦山核电公司"},
+        {id:"ow6",name:"核电秦山联营有限公司"},
+        {id:"ow7",name:"秦山第三合资公司"},
+        {id:"ow8",name:"中国广核核电集团有限公司"},
+        {id:"ow9",name:"辽宁核电有限公司"},
+        {id:"ow10",name:"岭东核电有限公司"},
+        {id:"ow11",name:"广东台山核电合资有限公司"},
+        {id:"ow12",name:"广东核电合资有限公司"},
+        {id:"ow13",name:"中国广东核电集团"},
+        {id:"ow14",name:"广西防城港核电有限公司"}
+      ];
+
+      var operatorList = [
+        {id:"op0",name:"中国原子能科学研究院"},
+        {id:"op1",name:"华能山东石岛湾核电有限公司"},
+        {id:"op2",name:"山东核电有限公司"},
+        {id:"op3",name:"辽宁红沿河核电有限公司"},
+        {id:"op4",name:"江苏核电有限公司"},
+        {id:"op5",name:"中国核工业集团核运营管理有限公司"},
+        {id:"op6",name:"核电秦山联营有限公司"},
+        {id:"op7",name:"秦山第三合资公司"},
+        {id:"op8",name:"三门核电有限公司"},
+        {id:"op9",name:"秦山核电公司"},
+        {id:"op10",name:"中国核工业集团福建福清核电有限公司"},
+        {id:"op11",name:"福建宁德核电有限公司"},
+        {id:"op12",name:"大亚湾核电运营管理有限公司"},
+        {id:"op13",name:"广东台山核电合资有限公司"},
+        {id:"op14",name:"阳江核电公司"},
+        {id:"op15",name:"广西防城港核电有限公司"},
+        {id:"op16",name:"海南核电公司"}
+      ];
+      var linkList = [
+        {s:"s0",ow:"ow0",op:"op0"},
+        {s:"s1",ow:"ow1",op:"op1"},
+        {s:"s2",ow:"ow2",op:"op2"},
+        {s:"s3",ow:"ow2",op:"op2"},
+        {s:"s4",ow:"ow3",op:"op3"},
+        {s:"s5",ow:"ow3",op:"op3"},
+        {s:"s6",ow:"ow3",op:"op3"},
+        {s:"s7",ow:"ow3",op:"op3"},
+        {s:"s8",ow:"ow3",op:"op3"},
+        {s:"s9",ow:"ow3",op:"op3"},
+        {s:"s10",ow:"ow4",op:"op4"},
+        {s:"s11",ow:"ow4",op:"op4"},
+        {s:"s12",ow:"ow0",op:"op4"},
+        {s:"s13",ow:"ow0",op:"op4"},
+        {s:"s14",ow:"ow5",op:"op5"},
+        {s:"s15",ow:"ow6",op:"op6"},
+        {s:"s16",ow:"ow6",op:"op6"},
+        {s:"s17",ow:"ow6",op:"op6"},
+        {s:"s18",ow:"ow6",op:"op6"},
+        {s:"s19",ow:"ow7",op:"op7"},
+        {s:"s20",ow:"ow7",op:"op7"},
+        {s:"s21",ow:"ow0",op:"op8"},
+        {s:"s22",ow:"ow0",op:"op8"},
+        {s:"s23",ow:"ow0",op:"op9"},
+        {s:"s24",ow:"ow0",op:"op9"},
+        {s:"s25",ow:"ow0",op:"op10"},
+        {s:"s26",ow:"ow0",op:"op10"},
+        {s:"s27",ow:"ow0",op:"op10"},
+        {s:"s28",ow:"ow0",op:"op10"},
+        {s:"s29",ow:"ow0",op:"op10"},
+        {s:"s30",ow:"ow8",op:"op11"},
+        {s:"s31",ow:"ow8",op:"op11"},
+        {s:"s32",ow:"ow8",op:"op11"},
+        {s:"s33",ow:"ow8",op:"op11"},
+        {s:"s34",ow:"ow9",op:"op12"},
+        {s:"s35",ow:"ow9",op:"op12"},
+        {s:"s36",ow:"ow10",op:"op12"},
+        {s:"s37",ow:"ow10",op:"op12"},
+        {s:"s38",ow:"ow11",op:"op13"},
+        {s:"s39",ow:"ow11",op:"op13"},
+        {s:"s40",ow:"ow12",op:"op14"},
+        {s:"s41",ow:"ow12",op:"op14"},
+        {s:"s42",ow:"ow8",op:"op14"},
+        {s:"s43",ow:"ow8",op:"op14"},
+        {s:"s44",ow:"ow8",op:"op14"},
+        {s:"s45",ow:"ow8",op:"op14"},
+        {s:"s46",ow:"ow13",op:"op12"},
+        {s:"s47",ow:"ow13",op:"op12"},
+        {s:"s48",ow:"ow14",op:"op15"},
+        {s:"s49",ow:"ow14",op:"op15"},
+        {s:"s50",ow:"ow0",op:"op16"},
+        {s:"s51",ow:"ow0",op:"op16"}
+      ];
+
+      var stationPos=[
+        "","s0",
+        "","s1","s2","s3",
+        "","s4","s5","s6","s7","s8","s9",
+        "","s10","s11","s12","s13",
+        "","s14","s15","s16","s17","s18","s19","s20","s21","s22","s23","s24",
+        "","s25","s26","s27","s28","s29","s30","s31","s32","s33",
+        "","s34","s35","s36","s37","s38","s39","s40","s41","s42","s43","s44","s45","s46","s47",
+        "","s48","s49",
+        "","s50","s51"
+      ];
+
+      var valueList = [
+        ["s0",20,25,65,20],
+        ["s1",200,211,500,200],
+        ["s2",1000,1250,3415,1000],
+        ["s3",1000,1250,3415,1000],
+        ["s4",1061,1119,2905,1061],
+        ["s5",1061,1119,2905,1061],
+        ["s6",1061,1119,2905,1061],
+        ["s7",1061,1119,2905,1061],
+        ["s8",1061,1119,2905,1061],
+        ["s9",1061,1119,2905,1061],
+        ["s10",990,1060,3000,990],
+        ["s11",990,1060,3000,990],
+        ["s12",990,1060,3000,990],
+        ["s13",990,1060,3000,990],
+        ["s14",298,310,966,288],
+        ["s15",610,650,1930,610],
+        ["s16",610,650,1930,610],
+        ["s17",619,660,1930,619],
+        ["s18",610,660,1930,619],
+        ["s19",677,728,2064,677],
+        ["s20",677,728,2064,677],
+        ["s21",1000,1250,3400,1000],
+        ["s22",1000,1250,3400,1000],
+        ["s23",1000,1080,2905,1000],
+        ["s24",1000,1080,2905,1000],
+        ["s25",1000,1080,2905,1000],
+        ["s26",1000,1080,2905,1000],
+        ["s27",1000,1080,2905,1000],
+        ["s28",1000,1080,2905,1000],
+        ["s29",1000,1087,2905,1000],
+        ["s30",1018,1080,2905,1018],
+        ["s31",1018,1080,2905,1018],
+        ["s32",1018,1080,2905,1018],
+        ["s33",1018,1080,2905,1018],
+        ["s34",950,990,2905,950],
+        ["s35",950,990,2905,950],
+        ["s36",1007,1080,2905,1007],
+        ["s37",1007,1080,2905,1007],
+        ["s38",944,984,2950,930],
+        ["s39",944,984,2905,930],
+        ["s40",1660,1750,4590,1660],
+        ["s41",1660,1750,4590,1660],
+        ["s42",1000,1086,2095,1021],
+        ["s43",1000,1080,2905,1000],
+        ["s44",1000,1080,2905,1000],
+        ["s45",1000,1080,2905,1000],
+        ["s46",1000,1080,2905,1000],
+        ["s47",1000,1080,2905,1000],
+        ["s48",1000,1080,2905,1000],
+        ["s49",1000,1080,2905,1000],
+        ["s50",610,650,1930,610],
+        ["s51",610,650,1930,610]
+      ];
+
+      var timeList = [
+        ["中国原子能科学研究院","2000-05-10","2011-07-21","2010-07-21",""],
+        ["石岛湾核电站1期","2012-12-09","","",""],
+        ["海阳核电站1期","2009-09-24","","",""],
+        ["海阳核电站2期","2010-06-20","","",""],
+        ["红沿河核电站1期","2007-08-18","2013-02-17","2013-01-16","2013-06-06"],
+        ["红沿河核电站2期","2008-03-28","2013-11-23","2013-10-24","2014-05-13"],
+        ["红沿河核电站3期","2009-03-07","2015-03-23","2014-10-27","2015-08-16"],
+        ["红沿河核电站4期","2009-08-15","","2016-03-05",""],
+        ["红沿河核电站5期","2015-03-29","","",""],
+        ["红沿河核电站6期","2015-07-24","","",""],
+        ["田湾核电站1期","1999-10-20","2006-05-12","2005-12-20","2007-05-17"],
+        ["田湾核电站2期","2000-09-20","2007-05-14","2007-05-01","2007-08-16"],
+        ["田湾核电站3期","2012-12-27","","",""],
+        ["田湾核电站4期","2013-09-27","","",""],
+        ["秦山核电站1期","1985-03-20","1991-12-15","1991-10-31","1994-04-01"],
+        ["秦山核电站2.1期","1996-06-02","2002-02-06","2001-11-15","2002-04-15"],
+        ["秦山核电站2.2期","1997-04-01","2004-03-11","2004-02-25","2004-05-03"],
+        ["秦山核电站2.3期","2006-04-28","2010-08-01","2010-07-13","2010-10-05"],
+        ["秦山核电站2.4期","2007-01-28","2011-11-25","2011-11-17","2011-12-30"],
+        ["秦山核电站3.1期","1998-06-08","2002-11-19","2002-09-21","2002-12-31"],
+        ["秦山核电站3.2期","1998-09-25","2003-06-12","2003-01-18","2003-07-24"],
+        ["三门核电站1期","2009-04-19","","",""],
+        ["三门核电站2期","2009-12-15","","",""],
+        ["方家山核电站1期","2008-12-26","2014-11-04","2014-10-21","2014-12-15"],
+        ["方家山核电站2期","2009-07-17","2015-01-12","2014-12-25","2015-02-12"],
+        ["福清核电站1期","2008-11-21","2014-08-20","2014-07-24","2014-11-22"],
+        ["福清核电站2期","2009-06-17","2015-08-06","2015-07-22","2015-10-16"],
+        ["福清核电站3期","2010-12-31","","",""],
+        ["福清核电站4期","2012-11-17","","",""],
+        ["福清核电站5期","2015-05-07","","",""],
+        ["宁德核电站1期","2008-02-18","2012-12-28","2012-11-24","2013-04-15"],
+        ["宁德核电站2期","2008-11-12","2014-01-04","2013-12-20","2014-05-04"],
+        ["宁德核电站3期","2010-01-08","2015-03-21","2015-03-08","2015-06-10"],
+        ["宁德核电站4期","2010-09-29","","",""],
+        ["岭澳核电站1期","1997-03-15","2002-02-26","2002-02-04","2002-05-28"],
+        ["岭澳核电站2期","1997-11-28","2002-09-14","2002-09-14","2003-01-08"],
+        ["岭澳核电站3期","2005-12-15","2010-07-15","2010-06-09","2010-09-15"],
+        ["岭澳核电站4期","2006-06-15","2011-05-03","2011-02-25","2011-08-07"],
+        ["台山核电站1期","2009-11-18","","",""],
+        ["台山核电站2期","2010-04-15","","",""],
+        ["阳江核电站1期","2008-12-16","2013-12-31","2013-12-23","2014-03-25"],
+        ["阳江核电站2期","2009-06-04","2015-03-10","2015-03-02","2015-06-05"],
+        ["阳江核电站3期","2010-11-15","2015-10-18","2015-10-11","2016-01-01"],
+        ["阳江核电站4期","2012-11-17","","",""],
+        ["阳江核电站5期","2013-09-18","","",""],
+        ["阳江核电站6期","2013-12-23","","",""],
+        ["大亚湾核电站1期","1987-08-07","1993-08-31","1993-07-28","1994-02-01"],
+        ["大亚湾核电站2期","1988-04-07","1994-02-07","1994-01-21","1994-05-06"],
+        ["防城港核电站1期","2010-07-30","2015-10-25","2015-10-13","2016-01-01"],
+        ["防城港核电站2期","2010-12-23","","",""],
+        ["昌江核电站1期","2010-04-25","2015-12-25","2015-10-12","2015-12-25"],
+        ["昌江核电站2期","2010-11-21","","",""]
+      ];
+
+      var posList = [
+        ["中国原子能科学研究院",116.053867,39.750718],
+        ["石岛湾核电站1期",121.643699,29.096831],
+        ["海阳核电站1期",120.943172,30.446089],
+        ["海阳核电站2期",120.943172,30.446089],
+        ["红沿河核电站1期",121.574237,39.76722],
+        ["红沿河核电站2期",121.574237,39.76722],
+        ["红沿河核电站3期",121.574237,39.76722],
+        ["红沿河核电站4期",121.574237,39.76722],
+        ["红沿河核电站5期",121.574237,39.76722],
+        ["红沿河核电站6期",121.574237,39.76722],
+        ["田湾核电站1期",119.469256,34.695714],
+        ["田湾核电站2期",119.469256,34.695714],
+        ["田湾核电站3期",119.469256,34.695714],
+        ["田湾核电站4期",119.469256,34.695714],
+        ["秦山核电站1期",120.923704,30.437535],
+        ["秦山核电站2.1期",120.923704,30.437535],
+        ["秦山核电站2.2期",120.923704,30.437535],
+        ["秦山核电站2.3期",120.923704,30.437535],
+        ["秦山核电站2.4期",120.923704,30.437535],
+        ["秦山核电站3.1期",120.923704,30.437535],
+        ["秦山核电站3.2期",120.923704,30.437535],
+        ["三门核电站1期",121.643699,29.096831],
+        ["三门核电站2期",121.643699,29.096831],
+        ["方家山核电站1期",120.943172,30.446089],
+        ["方家山核电站2期",120.943172,30.446089],
+        ["福清核电站1期",119.534374,25.522047],
+        ["福清核电站2期",119.534374,25.522047],
+        ["福清核电站3期",119.534374,25.522047],
+        ["福清核电站4期",119.534374,25.522047],
+        ["福清核电站5期",119.534374,25.522047],
+        ["宁德核电站1期",120.260364,27.109686],
+        ["宁德核电站2期",120.260364,27.109686],
+        ["宁德核电站3期",120.260364,27.109686],
+        ["宁德核电站4期",120.260364,27.109686],
+        ["岭澳核电站1期",114.49695,22.553928],
+        ["岭澳核电站2期",114.49695,22.553928],
+        ["岭澳核电站3期",114.49695,22.553928],
+        ["岭澳核电站4期",114.49695,22.553928],
+        ["大亚湾核电站1期",114.547101,22.594219],
+        ["大亚湾核电站2期",114.547101,22.594219],
+        ["台山核电站1期",112.90629,21.981434],
+        ["台山核电站2期",112.90629,21.981434],
+        ["阳江核电站1期",112.235147,21.744398],
+        ["阳江核电站2期",112.235147,21.744398],
+        ["阳江核电站3期",112.235147,21.744398],
+        ["阳江核电站4期",112.235147,21.744398],
+        ["阳江核电站5期",112.235147,21.744398],
+        ["阳江核电站6期",112.235147,21.744398],
+        ["防城港核电站1期",108.35582,21.622111],
+        ["防城港核电站2期",108.35582,21.622111],
+        ["昌江核电站1期",109.040956,19.391698],
+        ["昌江核电站2期",109.040956,19.391698]
+      ];
+
+      var provinceList = ["北京","山东","辽宁","江苏","浙江","福建","广东","广西","海南"];
+
+
+      /*-----------------------data set end ----------------------------*/
+      /*-----------------------const start ----------------------------*/
+
+      var blackColor = "#000";
+      var redColor = "#ff8b94";
+      var lightOrangeColor = "#F4A35D"
+      var orangeColor = "#f1882d";
+      var greenColor = "#a4bd3c";
+      var BGColor="#3b5998";
+      var titleColor ="#dfe3ee";
+      var nameColor ="#fff";
+      var constructColor ="#8b9dc3";
+      var weakenColor="#8b9dc3";
+      var lightBlueColor = "#8b9dc3";
+      var stationToOwnerColor=orangeColor;
+      var stationToOperatorColor=greenColor;
+
+
+
+
+       /*-----------------------const end ----------------------------*/
+
+
+      var fontSize = 30;
+      var fontSizeOver = 36;
+
+      var time=0;
+      var mouseX=0;
+      var mouseY=0;
+
+      var totalMouseX=0;
+      var totalMouseY=0;
+
+      var stagePressed=true;
+      var clickObject=null;
+
+      $(document).ready(
+        function(){
+          $("#infoDiv").css({"display":"none"});
+          var canvas=document.getElementById("mainCanvas");
+          var chartCanvas=document.getElementById("chartCanvas");
+          var infoCanvas=document.getElementById("infoCanvas");
+          var timeCanvas=document.getElementById("timeCanvas");
+          var totalTimeCanvas=document.getElementById("totalTimeCanvas");
+          var main=document.getElementById("mainCanvas").getContext("2d");
+          var chartCxt=document.getElementById("chartCanvas").getContext("2d");
+          var infoCxt=document.getElementById("infoCanvas").getContext("2d");
+          var timeCxt=document.getElementById("timeCanvas").getContext("2d");
+          var totalCxt=document.getElementById("totalTimeCanvas").getContext("2d");
+          canvas.addEventListener("mousemove",mousemove,false);
+          canvas.addEventListener("mousedown",mousedown,false);
+          totalTimeCanvas.addEventListener("mousemove",totalMouseove,false);
+
+          function mousemove(e){
+            mouseX=(e.clientX+$(window).scrollLeft()-$(canvas).offset().left)*2;
+            mouseY=(e.clientY+$(window).scrollTop()-$(canvas).offset().top)*2;
+          }
+
+          function totalMouseove(e){
+            totalMouseX=(e.clientX+$(window).scrollLeft()-$(totalTimeCanvas).offset().left)*2;
+            totalMouseY=(e.clientY+$(window).scrollTop()-$(totalTimeCanvas).offset().top)*2;
+            console.log(totalMouseX)
+            console.log(totalMouseY)
+          }
+
+
+          function mousedown(e){
+            for(var i=0;i<stationArray.length;i++){
+              if(stationArray[i].checkMouse()){
+                var station = stationArray[i];
+                station.click();
+                stagePressed=false;
+                info.name=station.name;
+                info.text=station.information;
+                info.display();
+                updateChart(station.id);
+                showTimeLine(station.name);
+                updateMap(station.name);
+                $("#infoDiv").css({"display":"inline-block"});
+                return
+              }
+            }
+
+            for(var i=0;i<ownerArray.length;i++){
+              if(ownerArray[i].checkMouse()){
+                ownerArray[i].click();
+                 $("#infoDiv").css({"display":"none"});
+                stagePressed=false;
+                return
+              }
+            }
+
+            for(var i=0;i<operatorArray.length;i++){
+              if(operatorArray[i].checkMouse()){
+                operatorArray[i].click();
+                $("#infoDiv").css({"display":"none"});
+                stagePressed=false;
+                return
+              }
+            }
+            stagePressed=true;
+            clickObject=null;
+          }
+
+/*-----------------------  data structure start ------------------------------*/
+
+          var INFO=function(){
+            this.x=80;
+            this.y=60;
+            this.name="";
+            this.text="";
+            this.offsetX=200;
+            this.offsetY=60;
+            this.minWidth=520;
+            this.maxWidth=this.minWidth+this.offsetX;
+            this.h=0
+          };
+          INFO.prototype.display=function(){
+
+            infoCxt.clearRect(0,0,infoCanvas.width,infoCanvas.height);
+            infoCxt.globalAlpha=1;
+            //console.log(this.name)
+
+            infoCxt.fillStyle=nameColor;
+            infoCxt.font="bold 36px 'Microsoft YaHei', 微软雅黑";
+            infoCxt.fillText(this.name,this.x+this.offsetX,this.y);
+
+            infoCxt.fillStyle=nameColor;
+            infoCxt.font= "28px 'Microsoft YaHei', 微软雅黑";
+            infoCxt.textAlign = "justify";
+            this.h=multiLineText(this.text,this.x,this.y+this.offsetY,this.maxWidth)
+
+          };
+
+          INFO.prototype.clear=function(){
+            infoCxt.clearRect(0,0,infoCanvas.width,infoCanvas.height);
+          };
+
+          function checkMouseProto(obj){
+            width = obj.name.length*43
+            hit = false;
+            if (mouseX>obj.x-20&&mouseX<obj.x+20&&mouseY>obj.y&&mouseY<obj.y+width) {
+              //console.log(obj.name)
+              hit = true
+            };
+            return hit;
+          }
+
+          var Station=function(id,name,state,information){
+            this.id=id;
+            this.name=name;
+            this.state= state;
+            this.information=information;
+            this.init();
+          };
+          Station.prototype.init=function(){
+            this.over=false;
+            this.font= fontSize+"px 'Microsoft YaHei', 微软雅黑";
+            this.alpha=1;
+            this.color=nameColor;
+            this.weaken=false
+          };
+          Station.prototype.display=function(){
+            if(this.weaken){
+              this.color=weakenColor
+            }else{
+              //console.log(this.state)
+              if(clickObject== this){
+                this.color=nameColor;
+              }
+              else{
+                if(this.state=="运营"){
+                  this.color=nameColor;
+                }else{
+                  this.color=constructColor;
+                }
+              }
+              
+            }
+            main.globalAlpha=this.alpha;
+            main.fillStyle=this.color;
+            main.font=this.font;
+            main.textAlign="left"; 
+            showText(this.name,this.x,this.y);
+          };
+
+          Station.prototype.checkMouse=function(){
+            return checkMouseProto(this);
+          }
+          Station.prototype.checkMouseEvent=function(){
+            if(this.checkMouse()){
+              if(clickObject==null){
+                info.name=this.name;
+                info.text=this.information;
+                info.display();
+                updateChart(this.id);
+                showTimeLine(this.name);
+                $("#infoDiv").css({"display":"inline-block"});
+              }
+              //console.log(this.name)
+              if(!this.over){
+                this.over=true;
+                this.mosueOver()
+              }
+              this.weaken=false
+            }else{
+              if(this.over){
+                this.over=false;
+                this.mosueOut()
+              }
+            }
+          };
+          Station.prototype.mosueOver=function(){
+            this.font=fontSizeOver+"px 'Microsoft YaHei', 微软雅黑";
+            //console.log(this.name)
+
+            //console.log(info.id);
+          };
+          Station.prototype.mosueOut=function(){
+            this.font= fontSize+"px 'Microsoft YaHei', 微软雅黑";
+            //this.lineHeight=16
+          };
+          Station.prototype.click=function(){
+            clickObject=this
+            //console.log(this.name)
+          };
+
+
+
+
+          var Owner=function(id,name){
+            this.id=id;
+            this.name=name;
+            this.init();
+          };
+          Owner.prototype.init=function(){
+            this.over=false;
+            this.alpha=1;
+            this.color=nameColor;
+            this.weaken=false
+            this.font= fontSize+"px 'Microsoft YaHei', 微软雅黑";
+          };
+          Owner.prototype.display=function(){
+            if(this.weaken){
+              this.color=weakenColor
+            }else{
+              this.color=nameColor
+            }
+            main.globalAlpha=this.alpha;
+            main.fillStyle=this.color;
+            main.font=this.font;
+            main.textAlign="left"; 
+            showText(this.name,this.x,this.y);
+          };
+
+          Owner.prototype.checkMouse=function(){
+            return checkMouseProto(this);
+          }
+          Owner.prototype.checkMouseEvent=function(){
+            if(this.checkMouse()){
+              //console.log(this.name)
+              if(!this.over){
+                this.over=true;
+                this.mosueOver()
+              }
+              this.weaken=false
+            }else{
+              if(this.over){
+                this.over=false;
+                this.mosueOut()
+              }
+            }
+          };
+          Owner.prototype.mosueOver=function(){
+            this.font=fontSizeOver+"px 'Microsoft YaHei', 微软雅黑";
+            //console.log(this.name)
+          };
+          Owner.prototype.mosueOut=function(){
+            this.font= fontSize+"px 'Microsoft YaHei', 微软雅黑";
+          };
+          Owner.prototype.click=function(){
+            clickObject=this
+          };
+
+
+
+          var Operator=function(id,name){
+            this.id=id;
+            this.name=name;
+            this.init();
+          };
+          Operator.prototype.init=function(){
+            this.over=false;
+            this.alpha=1;
+            this.color=nameColor;
+            this.weaken=false
+            this.font= fontSize+"px 'Microsoft YaHei', 微软雅黑";
+          };
+          Operator.prototype.display=function(){
+            if(this.weaken){
+              this.color=weakenColor
+            }else{
+              this.color=nameColor
+            }
+            main.globalAlpha=this.alpha;
+            main.fillStyle=this.color;
+            main.font=this.font;
+            main.textAlign="left"; 
+            showText(this.name,this.x,this.y);
+          };
+
+          Operator.prototype.checkMouse=function(){
+            return checkMouseProto(this);
+          }
+          Operator.prototype.checkMouseEvent=function(){
+            if(this.checkMouse()){
+              //console.log(this.name)
+              if(!this.over){
+                this.over=true;
+                this.mosueOver()
+              }
+              this.weaken=false
+            }else{
+              if(this.over){
+                this.over=false;
+                this.mosueOut()
+              }
+            }
+          };
+          Operator.prototype.mosueOver=function(){
+            this.font=fontSizeOver+"px 'Microsoft YaHei', 微软雅黑";
+            //console.log(this.name)
+          };
+          Operator.prototype.mosueOut=function(){
+            this.font= fontSize+"px 'Microsoft YaHei', 微软雅黑";
+            //this.lineHeight=16
+          };
+          Operator.prototype.click=function(){
+            clickObject=this
+          };
+
+          var StationToOwner=function(s,ow){
+            this.s=s;
+            this.ow=ow;
+            this.color=stationToOwnerColor
+          };
+          StationToOwner.prototype.display=function(){
+            main.globalAlpha=1;
+            main.strokeStyle=this.color;
+
+            width = this.ow.name.length*43
+            main.beginPath();
+            main.moveTo(this.s.x,this.s.y+10);
+            main.lineTo(this.ow.x,this.ow.y+width);
+            main.stroke()
+          };
+
+          var StationToOperator=function(s,op){
+            this.s=s;
+            this.op=op;
+            this.color=stationToOperatorColor
+          };
+          StationToOperator.prototype.display=function(){
+            main.strokeStyle=this.color;
+            main.globalAlpha=1;
+
+            main.beginPath();
+            width = this.s.name.length*43
+            main.moveTo(this.s.x,this.s.y+width);
+            main.lineTo(this.op.x,this.op.y+10);
+            main.stroke()
+            
+          };
+
+
+/*-----------------------  data structure end ------------------------------*/
+
+/*----------------------- tools start ------------------------------*/
+          function multiLineText(string,x,y,w){
+            var tx=28;
+            var ty=0;
+            for(var i=0;i<string.length;i++){
+              var c=string.charAt(i);
+              if(c!="/"){
+                infoCxt.fillText(c,x+tx,y+ty);
+                tx+=infoCxt.measureText(c).width+2;
+                if(tx>w){
+                  tx=0;
+                  ty+=40
+                }
+              }else{
+                tx=28;
+                ty+=50
+              }
+            }
+            return ty+20
+          }
+
+        
+
+          function showText(string,x,y){
+            var h =40;
+            main.save();
+            main.translate(x,y);
+            for(var i=0;i<string.length;i++){
+              main.translate(0,h);
+              main.textBaseline="middle"; 
+              main.fillText(string.charAt(i),-main.measureText(string.charAt(i)).width/2,0)
+            }
+            main.restore()
+          }
+
+          function getDataByID(dataArr,id){
+            for(var i=0;i<dataArr.length;i++){
+              if(dataArr[i].id==id){
+                return dataArr[i]
+              }
+            }
+          }
+
+          function getDataByName(dataArr,name){
+            for(var i=0;i<dataArr.length;i++){
+              if(dataArr[i][0]==name){
+                return dataArr[i]
+              }
+            }
+          }
+
+/*----------------------- tools end ------------------------------*/
+/*----------------------- display start ------------------------------*/
+          function initArr(obj,objArray,x,y,space){
+            obj.x=x+i*space;
+            obj.y=y;
+            obj.textWidth = main.measureText(obj.name).width;
+            objArray.push(obj)
+          }
+
+          function displayData(dataArr){
+            for(var i=0;i<dataArr.length;i++){
+              if(clickObject==null||clickObject==dataArr[i]){
+                dataArr[i].weaken=false
+              }else{
+                dataArr[i].weaken=true
+              }
+              dataArr[i].display()
+            }
+          }
+
+          function drawTitle(){
+            main.fillStyle=orangeColor;
+            main.font="bold "+fontSizeOver+"px 'Microsoft YaHei', 微软雅黑";
+            showText("持有机构",240,120);
+            main.fillStyle=nameColor;
+            showText("核电站",20,800);
+            main.fillStyle=greenColor;
+            showText("运营机构",160,1360);
+
+            main.font="30px 'Microsoft YaHei', 微软雅黑";
+            main.fillStyle=nameColor;
+            main.fillText("已运营核电站",2400,100);
+            main.fillStyle=weakenColor;
+            main.fillText("建造中核电站",2400,160);
+
+            main.fillStyle=nameColor;
+            main.fillRect(2350,80,20,20);
+            main.fillStyle=weakenColor;
+            main.fillRect(2350,140,20,20);
+          }
+
+          function drawProvince(){
+            for(var i=0;i<provinceArray.length;i++){
+              main.fillStyle=nameColor;
+              main.font="bold "+fontSizeOver+"px 'Microsoft YaHei', 微软雅黑";
+              showText(provinceList[i],provinceArray[i].x,provinceArray[i].y);
+            }
+          }
+
+          var provinceArray = new Array();
+          var stationArray=new Array();
+          var ownerArray=new Array();
+          var operatorArray=new Array();
+          var station_ownerArray=new Array();
+          var station_operatorArray=new Array();
+          var info=new INFO();
+
+
+          for(var i=0;i<stationPos.length;i++){
+            var space=40;
+            var x=90;
+            var y=760;
+            if(stationPos[i]!=""){
+              var sData=getDataByID(stationList,stationPos[i]);
+              information = "   类型："+sData.type+"/   "+sData.explan;
+              var station =new Station(sData.id,sData.name,sData.state,information);
+              station.x=x+i*space;
+              station.y=y;
+              station.textWidth = main.measureText(station.name).width;
+              stationArray.push(station)
+            }else{
+              province = {};
+              province.x=x+i*space;
+              province.y=y+60;
+              provinceArray.push(province)
+            }
+          }
+
+          for(var i=0;i<ownerList.length;i++){
+            var owData=ownerList[i];
+            var owner =new Owner(owData.id,owData.name);
+            initArr(owner,ownerArray,400,50,120);
+          }
+
+
+          for(var i=0;i<operatorList.length;i++){
+            var opData=operatorList[i];
+            var operator =new Operator(opData.id,opData.name);
+            initArr(operator,operatorArray,300,1300,120);
+          }
+
+          for(var i=0;i<linkList.length;i++){
+            var data = linkList[i];
+            var s=getDataByID(stationArray,data.s);
+            var ow=getDataByID(ownerArray,data.ow);
+            var s_ow=new StationToOwner(s,ow);
+            station_ownerArray.push(s_ow)
+          }
+
+          for(var i=0;i<linkList.length;i++){
+            var data = linkList[i];
+            var s=getDataByID(stationArray,data.s);
+            var op=getDataByID(operatorArray,data.op);
+            var s_op=new StationToOperator(s,op);
+            station_operatorArray.push(s_op)
+          }
+
+          //showChart();
+
+
+          window.requestAnimFrame=(function(){
+            return window.requestAnimationFrame||window.webkitRequestAnimationFrame||window.mozRequestAnimationFrame||
+            window.oRequestAnimationFrame||window.msRequestAnimationFrame||
+            function(callback){
+              window.setTimeout(callback,1000/33)
+            }
+          })();
+
+          (function draw(){
+            requestAnimFrame(draw);
+            main.clearRect(0,0,canvas.width,canvas.height);
+            main.lineWidth=3;
+            drawTitle();
+            drawProvince();
+
+            for(var i=0;i<stationArray.length;i++){
+              if(clickObject==null){
+                stationArray[i].weaken=false
+              }else if(clickObject==stationArray[i]){
+                stationArray[i].weaken=false
+              }else{
+                stationArray[i].weaken=true
+              }
+              stationArray[i].checkMouseEvent();
+            }
+
+            for(var i=0;i<ownerArray.length;i++){
+              if(clickObject==null){
+                ownerArray[i].weaken=false
+              }else if(clickObject==ownerArray[i]){
+                ownerArray[i].weaken=false
+              }else{
+                ownerArray[i].weaken=true
+              }
+              ownerArray[i].checkMouseEvent();
+            }
+
+            for(var i=0;i<operatorArray.length;i++){
+              if(clickObject==null){
+                operatorArray[i].weaken=false
+              }else if(clickObject==operatorArray[i]){
+                operatorArray[i].weaken=false
+              }else{
+                operatorArray[i].weaken=true
+              }
+              operatorArray[i].checkMouseEvent();
+            }
+
+            for(var i=0;i<station_ownerArray.length;i++){
+              if(clickObject==null||station_ownerArray[i].s.id==clickObject.id||station_ownerArray[i].ow.id==clickObject.id){
+                station_ownerArray[i].display();
+                station_ownerArray[i].s.weaken=false;
+                station_ownerArray[i].ow.weaken=false;
+              }
+            }
+
+            for(var i=0;i<station_operatorArray.length;i++){
+              if(clickObject==null||station_operatorArray[i].s.id==clickObject.id||station_operatorArray[i].op.id==clickObject.id){
+                station_operatorArray[i].display();
+                station_operatorArray[i].s.weaken=false;
+                station_operatorArray[i].op.weaken=false;
+              }
+            }
+
+            for(var i=0;i<stationArray.length;i++){
+              stationArray[i].display();
+            }
+            for(var i=0;i<ownerArray.length;i++){
+              ownerArray[i].display();
+            }
+            for(var i=0;i<operatorArray.length;i++){
+              operatorArray[i].display();
+            }
+            time++;
+            //console.log(time);
+          })();
+
+/*----------------------- display end ------------------------------*/
+/*----------------------- chart start ------------------------------*/
+          var barChartData = {
+            labels : ["净功率","总功率","设计功率","热功率"],
+            datasets : [
+              {
+                fillColor : "rgba(151,187,205,0.5)",
+                strokeColor : "rgba(151,187,205,0.8)",
+                highlightFill : "rgba(151,187,205,0.75)",
+                highlightStroke : "rgba(151,187,205,1)",
+                data : [0,0,0,0]
+              },
+            ]
+
+          }
+          var chart = new Chart(chartCxt).Bar(barChartData);
+
+          function updateChart(id){
+            for(var i=0;i<valueList.length;i++){
+              if(valueList[i][0] == id){
+                var valueData = valueList[i];
+                chart.datasets[0].bars[0].value =valueData[1];
+                chart.datasets[0].bars[1].value =valueData[2];
+                chart.datasets[0].bars[2].value =valueData[4];
+                chart.datasets[0].bars[3].value =valueData[3];
+                chart.update();
+              }
+            }
+          }
+
+          function clearChart(){
+            chart.datasets[0].bars[0].value =0;
+            chart.datasets[0].bars[1].value =0;
+            chart.datasets[0].bars[2].value =0;
+            chart.datasets[0].bars[3].value =0;
+            chart.update();
+          }
+
+/*----------------------- chart end ------------------------------*/
+/*----------------------- timeline start ------------------------------*/
+          setUpTimeLine();
+          var lineY = 300;
+          var lineX = 100;
+          var lineSpace = 130;
+          var lineTitleList = ["起建时间","首次临界","首次发电","商业运行","建造中"];
+
+          function calculateDay(day1,day2){
+            var list1 = String(day1).split("-");
+            var list2 = String(day2).split("-");
+            var oneDay = 24*60*60*1000; // hours*minutes*seconds*milliseconds
+            var firstDate = new Date(parseInt(list1[0]),parseInt(list1[1]),parseInt(list1[2]));
+            var secondDate = new Date(parseInt(list2[0]),parseInt(list2[1]),parseInt(list2[2]));
+
+            var diffDays = Math.round(Math.abs((firstDate.getTime() - secondDate.getTime())/(oneDay)));
+            return diffDays;
+          }
+
+
+          function setUpTimeLine(){
+            timeCxt.clearRect(0,0,timeCanvas.width,timeCanvas.height);
+            timeCxt.globalAlpha=1;
+            timeCxt.lineWidth = 4;
+            timeCxt.strokeStyle = nameColor;
+
+            timeCxt.beginPath();
+            timeCxt.moveTo(50,lineY);
+            timeCxt.lineTo(550,lineY);
+            timeCxt.stroke()
+
+            timeCxt.beginPath();
+            timeCxt.moveTo(530,lineY-10);
+            timeCxt.lineTo(550,lineY);
+            timeCxt.stroke()
+
+            timeCxt.beginPath();
+            timeCxt.moveTo(530,lineY+10);
+            timeCxt.lineTo(550,lineY);
+            timeCxt.stroke()
+          }
+
+
+
+          function showTimeLine(name){
+
+            setUpTimeLine();
+
+            timeCxt.font="30px 'Microsoft YaHei', 微软雅黑";
+            timeCxt.fillStyle=nameColor;
+            timeCxt.fillText("发电规格/兆瓦",600,35);
+            //console.log(name)
+            var timeData = getDataByName(timeList,name);
+            //console.log(timeData)
+            var start = timeData[1];
+            var test = timeData[3];
+            var first = timeData[2];
+            var business = timeData[4];
+
+            tempTime = [start,test,first,business];
+            var building = false;
+            var total = 400;
+
+            var draw = function(i,totalDays){
+                timeCxt.font="20px 'Microsoft YaHei', 微软雅黑";
+                timeCxt.fillStyle=nameColor;
+                timeCxt.fillText(tempTime[i],lineX+lineSpace*i-50,160);
+
+                timeCxt.font="24px 'Microsoft YaHei', 微软雅黑";
+                timeCxt.fillText(lineTitleList[i],lineX+lineSpace*i-50,100);
+
+                day = calculateDay(tempTime[i],start);
+                //console.log(day)
+                rate = day/totalDays;
+                //console.log(rate)
+                timeCxt.fillStyle=redColor;
+                timeCxt.beginPath();
+                timeCxt.arc(lineX+total*rate,lineY,10,0,Math.PI*2)
+                timeCxt.fill();
+
+                timeCxt.lineWidth = 2;
+                timeCxt.strokeStyle = redColor;
+                timeCxt.beginPath();
+                timeCxt.moveTo(lineX+lineSpace*i,170);
+                timeCxt.lineTo(lineX+total*rate,lineY);
+                timeCxt.stroke()
+          }
+
+
+            if(timeData.indexOf("")<0){
+
+              totalDays = calculateDay(business,start);
+              for(var i=0;i<4;i++){
+                draw(i,totalDays);
+              }
+            }else{
+                if(timeData[0] == "中国原子能科学研究院"){
+                    totalDays = calculateDay(first,start);
+                      for(var i=0;i<3;i++){
+                        draw(i,totalDays);
+                      }
+                }else{
+                    draw(0,50);
+                    timeCxt.font="bold 40px 'Microsoft YaHei', 微软雅黑";
+                    timeCxt.fillStyle=nameColor;
+                    timeCxt.fillText("建造中",300,220);
+                }
+
+            }
+          }
+
+          var totalX = 20;
+          var totalY = 300;
+          var totalXEnd = 2600;
+          var totalLength = (totalXEnd - totalX)*0.9;
+          var cityY = 100;
+          var citySpace = 160;
+          var yearSpace = 60;
+          var yearList = ["1985-01-01","1990-01-01","1995-01-01","2000-01-01","2005-01-01",,"2010-01-01","2015-01-01"]
+          
+
+
+          var sorted = quickSort(timeList.slice())
+          var totalDays =  calculateDay(sorted[sorted.length-1][1],sorted[0][1])
+          var cityList = new Array();
+          setUpTotalTimeLine();
+
+           function compare(x1,x2){
+             var result = false
+             var list1 = String(x1[1]).split("-");
+             var list2 = String(x2[1]).split("-");
+             if(list1[0]>list2[0]){
+                result = true
+             }else if(list1[0]==list2[0]){
+                if(list1[1]>list2[1]){
+                    result = true
+                }else if(list1[1]==list2[1]){
+                    if(list1[2]>list2[2]){
+                        result = true
+                    }
+                }
+             }
+             return result;
+          }
+
+          function quickSort(arr) {
+        　　if (arr.length <= 1) { return arr; }
+        　　var pivotIndex = Math.floor(arr.length / 2);
+        　　var pivot = arr.splice(pivotIndex, 1)[0];
+        　　var left = [];
+        　　var right = [];
+        　　for (var i = 0; i < arr.length; i++){
+        　　　　if (compare(pivot,arr[i])) {
+        　　　　　　left.push(arr[i]);
+        　　　　} else {
+        　　　　　　right.push(arr[i]);
+        　　　　}
+        　　}
+        　　return quickSort(left).concat([pivot], quickSort(right));
+          }
+
+          
+          function extractCity(name){
+            var idx = name.indexOf("核");
+            var city = "";
+            if(idx<0){
+                city = "中原子研究院";
+            }else{
+                city = String(name).substr(0,idx);
+            }
+            return city;
+          }
+
+          function checkCityList(name){
+            for(var i=0;i<cityList.length;i++){
+                if(cityList[i].name == name){
+                    return cityList[i];
+                }
+            }
+            return null;
+          }
+
+          function updateCitys(i){
+            var start = sorted[i][1];
+            var diff = calculateDay(start,sorted[0][1]);
+            var rate = diff/totalDays;
+            var city = extractCity(sorted[i][0]);
+            var resultObj = checkCityList(city);
+            if(resultObj == null){
+                var obj = {}
+                obj.name = city;
+                obj.xArr = [];
+                obj.xArr.push(totalX+50+totalLength*rate);
+                cityList.push(obj);
+            }else{
+                resultObj.xArr.push(totalX+50+totalLength*rate);
+            }
+          }
+
+          function drawCitys(j){
+            var city = cityList[j];
+            var arr = city.xArr;
+            totalCxt.font="35px 'Microsoft YaHei', 微软雅黑";
+            totalCxt.fillStyle=nameColor;
+            if(String(city.name).length>4){
+                totalCxt.fillText(city.name,totalX+j*citySpace-58,cityY);
+            }else{
+                totalCxt.fillText(city.name,totalX+j*citySpace,cityY);
+            }
+            
+
+            for(var i=0;i<arr.length;i++){
+                totalCxt.fillStyle=redColor;
+                totalCxt.beginPath();
+                totalCxt.arc(arr[i],totalY,5,0,Math.PI*2)
+                totalCxt.fill();
+
+                totalCxt.lineWidth = 2;
+                totalCxt.strokeStyle = redColor;
+
+                totalCxt.beginPath();
+                totalCxt.moveTo(totalX+j*citySpace+String(city.name).length*30/2,cityY+15);
+                totalCxt.lineTo(totalX+j*citySpace+String(city.name).length*30/2,cityY+45);
+                totalCxt.stroke()
+
+                totalCxt.beginPath();
+                totalCxt.moveTo(totalX+j*citySpace+String(city.name).length*30/2,cityY+45);
+                totalCxt.lineTo(arr[i],totalY-30);
+                totalCxt.stroke()
+
+                totalCxt.beginPath();
+                totalCxt.moveTo(arr[i],totalY-30);
+                totalCxt.lineTo(arr[i],totalY);
+                totalCxt.stroke()
+            }
+          }
+
+
+          function drawTotalYears(i){
+            var year = yearList[i];
+            var diff = calculateDay(year,sorted[0][1]);
+            var rate = diff/totalDays;
+            totalCxt.font="25px 'Microsoft YaHei', 微软雅黑";
+            totalCxt.fillStyle=nameColor;
+            totalCxt.fillText(String(year).substr(0,4),totalX+totalLength*rate-20,totalY+40);
+
+            totalCxt.lineWidth = 2;
+            totalCxt.strokeStyle = nameColor;
+            totalCxt.beginPath();
+            totalCxt.moveTo(totalX+totalLength*rate,totalY-10);
+            totalCxt.lineTo(totalX+totalLength*rate,totalY);
+            totalCxt.stroke();
+          }
+
+          function setUpTotalTimeLine(){
+            totalCxt.clearRect(0,0,totalTimeCanvas.width,totalTimeCanvas.height);
+            totalCxt.globalAlpha=1;
+            totalCxt.lineWidth = 4;
+            totalCxt.strokeStyle = nameColor;
+
+            totalCxt.beginPath();
+            totalCxt.moveTo(totalX,lineY);
+            totalCxt.lineTo(totalXEnd,lineY);
+            totalCxt.stroke();
+
+            totalCxt.beginPath();
+            totalCxt.moveTo(totalXEnd-20,lineY-10);
+            totalCxt.lineTo(totalXEnd,lineY);
+            totalCxt.stroke();
+
+            totalCxt.beginPath();
+            totalCxt.moveTo(totalXEnd-20,lineY+10);
+            totalCxt.lineTo(totalXEnd,lineY);
+            totalCxt.stroke();
+
+            totalCxt.font="bold 36px 'Microsoft YaHei', 微软雅黑";
+            totalCxt.fillStyle=nameColor;
+            totalCxt.fillText("中国核电站建造时间轴",1100,totalY-260);
+
+            //console.log(sorted)
+            for(var i=0;i<sorted.length;i++){
+                updateCitys(i);
+            }
+
+            for(var i=0;i<cityList.length;i++){
+                drawCitys(i);
+            }
+
+            for(var i=0;i<yearList.length;i++){
+                drawTotalYears(i);
+            }
+          }
+/*----------------------- timeline end ------------------------------*/
+
+
+        }
+      );
+
+    </script>
+  </div>
+  
+  <!---Three list: nuclear station name, owner, operator -->
+  <!---Show text information on the right top corner-->
+  <!---Timeline on the left top corner-->
+  <!---Specification on the left bottom corner-->
+  <!---Worldwide Nuclear Power Stateion-->
+  <div id="worldwide" style="background-color:#dfe3ee;width:100%;height:400px;"> 
+  
+        <div style="width: 30%;padding-top: 10px;padding-left:100px;float: left; ">
+            <p style="float: left;padding-top:3em;">单位：个</p>
+            <p style="margin-left:4em;float:left;padding-top:3em;">世界核电站数量前五排行</p>
+            <canvas id="worldCanvas" style="height:200px;s"></canvas>
+            <a href = "https://data.oecd.org/" target= "_blank" style = "color:#8b9dc3; font-size:12px; 
+            margin-left:12em;">数据来源：OECD Data</a>
+        </div>
+
+        <div id = "text" style="width: 50%;float:left;margin-left: 130px; display:in-cline block;">
+            <br>
+            <br>
+            <p>从上图的时间轴可以发现，中国的核电站工程从2010年起进入了一个密集的上升期。放眼全世界，其他国家在核电方面又是怎样的情况呢？</p>
+
+            <p> 左图是一份世界核电站数量的排行统计，可以发现，美国坐拥目前世界上最多的核电站，同时核能占到了美国能源使用的20%。第二名的法国也是核能发电中的佼佼者，70年代法国核电占总能源比重只有8%，然而随着燃油发电成本的增高，再加上法国相对丰富的铀矿资源，使得法国政府决定全面转向核电。至21世纪法国彻底改变了自己的电力结构，使用的能源75%来自核电，一跃成为全球核电大国同时也是是世界上最大的电力净出口国。</p>
+
+            <p>在亚洲,发展中国家们面临着经济发展同步的能源需求和碳排放的压力，推进核能显然是一个经济实用的办法。5年前的福岛核电站事故虽然触目惊心，但日本政府为了解决高速增长的电力需求与化石燃料的短缺，仍在努力地投入建设新核电站。同样，我国的台湾岛有8座核电站，2016年3月12日台湾民间组织起声势浩大的“废核行动”，倡导废除核电，“ 没有核安，就没有核电。” 与今年日本3.11福岛核电站事故5周年相呼应，我国对于核能发展和核电事故的争议也从未停止。</p>
+
+            <p>那么，历史上的核电事故又有哪些呢？</p>
+        </div>
+
+        <script>
+            var barChartData = {
+                labels : ["中国台湾省","俄罗斯","中国","日本","法国","美国","世界总量"],
+                datasets : [
+                    {
+                        fillColor : BGColor,
+                        strokeColor : "rgba(151,187,205,0.8)",
+                        highlightFill : "rgba(151,187,205,0.75)",
+                        highlightStroke : "rgba(151,187,205,1)",
+                        data : [8,48,55,62,71,137,442]
+                    },
+                ]
+            }
+            window.onload = function(){
+                var ctx = document.getElementById("worldCanvas").getContext("2d");
+                window.myBar = new Chart(ctx).Bar(barChartData, {
+                    responsive : true,scaleFontColor: "#000",
+                });
+            }
+
+        </script>
+  </div>
+  <!---Worldwide Nuclear Power Stateion Accidents-->
+  <div id="accident" style="background-color:#dfe3ee;width:100%;height:450px;">
+
+      <div id="googft-mapCanvas"></div>
+      <div id = "text" style="width: 40%; float:left; margin-left:2em;margin-top:-1em;">
+            <ul>
+            <li><strong>1979年美国三里岛事故：</strong>该事故是核电厂第一个严重事故。事故的原因主要在于人的失误发生事故后操纵员判断失误第一道安全屏障失效第二道安全屏障上出现一个小破口，主要的放射性物质被第三道安全屏障（安全壳）容纳着，有小部分释放到环境中，造成了环境放射性超标、工作人员剂量超标，但是没有人员伤亡，没有群众撤离。</li>
+            <br>
+            <li><strong>1986年乌克兰切尔诺贝利核电厂事故：</strong>该事故是到目前为止最恶劣、影响最大的核电事故。致命的设计缺陷切尔诺贝利没有安全壳发生爆炸后，放射性尘云直冲天际，最终降落到欧洲各地.违规操作是切尔诺贝利事故发生的直接原因。</li>
+            <br>
+            <li><strong>2011年日本福岛核电站事故：</strong>日本3•11的地震等级远高于福岛核电厂在四十年前设计时考虑的地震等级，但是电厂仍然成功停堆，说明电厂的抗震能力是高于设计要求的；设计者修建了7米的防波堤，但是这次的海啸高达10余米，淹没了柴油发电机电厂没有及时得到外界的支援，结果就是燃料芯块和燃料棒慢慢被融化，同时燃料棒产生氢气被点燃、爆炸。尽管如此，福岛核电厂的反应堆并没有发生爆炸，对环境的放射性也远低于切尔诺贝利事故，从事故后两年多的情况来看，福岛厂址之外的环境正在恢复正常。</li>
+            </ul>
+            <a href ="http://www.theguardian.com/news/datablog/2011/mar/14/nuclear-power-plant-accidents-list-rank" target ="_blank"  style = "color:#8b9dc3; font-size:12px;margin-left:3.1em;"> 数据来源：英国卫报</a>
+        </p>
+        </div>
+  </div>
+  
+  <!---Foot: data source, author, profile-->  
+  <div class ="footer"  >
+
+     <div id = "reference" style="float:left;display:inline-block;margin-left: 50px;font-family: Microsoft Yahei;">
+
+         <p><strong>参考文献：</strong></p>
+         <p><a href = "https://www.youtube.com/watch?v=xbK4KeD2ajI" target="_blank">[1] 柴静雾霾调查：穹顶之下</a></p>
+         <p><a href = "http://www.18show.cn/zt434003/Affiche_576308.html" target="_blank">[2] 两会上的中国核电重启之争</a></p>
+         <p><a href = "http://news.bjx.com.cn/html/20150311/596762.shtml" target="_blank">[3] 两会观察：内陆核电之争的口水与逻辑</a></p>
+         <p><a href = "http://index.baidu.com/?tpl=demand&word=%BA%CB%B5%E7" target="_blank">[4] 百度指数“核能”搜索结果</a></p>
+         <p><a href = "http://www.world-nuclear.org/information-library/country-profiles/countries-a-f/france.aspx" target="_blank">[5] 法国核电</a></p>
+         <p><a href = "http://energy.people.com.cn/n1/2016/0309/c71661-28185680.html" target="_blank">[6] 两会综述：“中国核电将怎样走向世界？”</a></p>
+         <p><a href = "https://www.zhihu.com/question/20398674" target="_blank">[7] 核电站到底是不是环保与安全？</a></p>
+         <p><a href = "http://www.the9billion.com/2011/03/24/death-rate-from-nuclear-power-vs-coal/" target="_blank">[8] 核电与煤电带来的死亡率的对比</a></p>
+         <p><a href = "https://www.zhihu.com/question/20176508" target="_blank">[9] 核电到底好不好？</a></p>
+
+     </div>
+
+     <div id = "author" style="float:center;display:inline-block;font-family: Microsoft Yahei;">
+         <p><strong>作者：</strong></p>
+         <p><strong>李骏（学生，香港大学）</strong></p>
+         <p><strong>张甜艺</strong></p>
+         <p><strong>巢恬逸</strong></p>
+         <p><a href="https://github.com/TansyZhang/nuclearPowerData.git" target="_blank">请到GitHub下载整理后的相关数据</a></p>
+     </div>
+
+     <div id = "data" style="float:right;display:inline-block;margin-right: 80px;font-family: Microsoft Yahei;">
+         
+         <p><strong>相关数据库链接：</strong></p>
+         <p><a href="https://www.iaea.org/pris/">[1] IAEA|PRIS</a></p>
+         <p><a href="https://data.oecd.org">[2] OECD Data</a></p>
+         <p><a href="http://world-nuclear.org/">[3] 世界核协会</a></p>
+         <p><a href="http://nnsa.mep.gov.cn/hdcfbt/">[4] 国家核安全局</a></p>
+         <p><a href="http://np.chinapower.com.cn/">[5] 中国电力发展会核能分会</a></p>
+         <p><a href="http://np.chinapower.com.cn/">[6] 中华人民共和国国家统计局</a></p>
+         <p><a href="http://www.theguardian.com/news/datablog/2011/mar/14/nuclear-power-plant-accidents-list-rank">[7] 英国卫报</a></p>
+
+
+     </div>  
+         
+  </div>
+</body>
+</html>
